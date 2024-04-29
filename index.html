@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact App</title>
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal {
+    background-color: #fefefe;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Contact App</h1>
+    <button id="add-contact-btn">Add Contact</button>
+    <div id="contacts"></div>
+</div>
+<div id="overlay" class="overlay">
+    <div class="modal">
+        <span class="close">&times;</span>
+        <h2>Add Contact</h2>
+        <input type="text" id="name" placeholder="Name">
+        <input type="tel" id="phone" placeholder="Phone Number">
+        <button id="save-contact">Save</button>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const addContactBtn = document.getElementById('add-contact-btn');
+    const overlay = document.getElementById('overlay');
+    const closeModal = document.querySelector('.close');
+    const saveBtn = document.getElementById('save-contact');
+    const contactsDiv = document.getElementById('contacts');
+
+    addContactBtn.addEventListener('click', function() {
+        overlay.style.display = 'block';
+    });
+
+    closeModal.addEventListener('click', function() {
+        overlay.style.display = 'none';
+    });
+
+    saveBtn.addEventListener('click', function() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const contactDiv = document.createElement('div');
+        contactDiv.innerHTML = `<p><strong>Name:</strong> ${name}</p><p><strong>Phone:</strong> ${phone}</p><button class="call-btn">Call</button>`;
+        contactsDiv.appendChild(contactDiv);
+        overlay.style.display = 'none';
+    });
+
+    contactsDiv.addEventListener('click', function(event) {
+        if (event.target.classList.contains('call-btn')) {
+            const phoneNumber = event.target.previousSibling.textContent.trim().split(':')[1];
+            window.location.href = 'tel:' + phoneNumber.replace(/\D/g, '');
+        }
+    });
+});
+
+</script>
+</body>
+</html>
